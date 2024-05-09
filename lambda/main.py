@@ -1,3 +1,7 @@
 def handler(event, context):
-    print(event)
-    return {"status_code": 200, "body": "Hello World"}
+    response_body = {
+        "message": "Hello World 👋",
+        "version": "1.0.0",
+    }
+
+    return {"status_code": 200, "body": response_body}
