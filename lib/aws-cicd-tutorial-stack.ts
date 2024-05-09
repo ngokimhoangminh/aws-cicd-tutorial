@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { Construct } from 'constructs';
+import * as dotenv from "dotenv";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class AwsCicdTutorialStack extends cdk.Stack {
@@ -14,10 +15,16 @@ export class AwsCicdTutorialStack extends cdk.Stack {
     //   visibilityTimeout: cdk.Duration.seconds(300)
     // });
 
+    // Load the environment .env file.
+    dotenv.config();
+
     const lambdaFunc = new lambda.Function(this, 'LambdaFunction', {
       runtime: lambda.Runtime.PYTHON_3_12,
       code: lambda.Code.fromAsset("lambda"),
-      handler: 'main.handler'
+      handler: 'main.handler',
+      environment: {
+        VERSION: process.env.VERSION || "0.0"
+      }
     });
 
     const functionUrl = lambdaFunc.addFunctionUrl({
